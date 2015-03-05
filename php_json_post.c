@@ -46,47 +46,87 @@ PHP_MINFO_FUNCTION(json_post)
 	DISPLAY_INI_ENTRIES();
 }
 
+#if PHP_VERSION_ID >= 70000
+static SAPI_POST_HANDLER_FUNC(php_json_post_handler)
+{
+	zend_string *json = NULL;
+
+	if (SG(request_info).request_body) {
+		/* FG(stream_wrappers) not initialized yet, so we cannot use php://input */
+		php_stream_rewind(SG(request_info).request_body);
+		json = php_stream_copy_to_mem(SG(request_info).request_body, PHP_STREAM_COPY_ALL, 0);
+	}
+
+	if (json) {
+		if (json->len) {
+			zval tmp;
+
+			ZVAL_NULL(&tmp);
+
+			php_json_decode(&tmp, json->val, json->len, JSON_POST_G(flags), PG(max_input_nesting_level));
+
+			switch (Z_TYPE(tmp)) {
+			case IS_OBJECT:
+			case IS_ARRAY:
+				zval_dtor(arg);
+				ZVAL_COPY_VALUE(&PG(http_globals)[TRACK_VARS_POST], &tmp);
+				break;
+			default:
+				break;
+			}
+		}
+		zend_string_release(json);
+	}
+}
+
+#else
+
 static SAPI_POST_HANDLER_FUNC(php_json_post_handler)
 {
 	zval *zarg = arg;
 	char *json_str = NULL;
 	size_t json_len = 0;
 
-#if PHP_VERSION_ID >= 50600
-	if (SG(request_info).request_body) {
-		/* FG(stream_wrappers) not initialized yet, so we cannot use php://input */
-		php_stream_rewind(SG(request_info).request_body);
-		json_len = php_stream_copy_to_mem(SG(request_info).request_body, &json_str, PHP_STREAM_COPY_ALL, 0);
+#	if PHP_VERSION_ID >= 50600
+	if (!SG(request_info).request_body) {
+		return;
 	}
-#else
+
+	/* FG(stream_wrappers) not initialized yet, so we cannot use php://input */
+	php_stream_rewind(SG(request_info).request_body);
+	json_len = php_stream_copy_to_mem(SG(request_info).request_body, &json_str, PHP_STREAM_COPY_ALL, 0);
+#	else
 	json_str = SG(request_info).raw_post_data;
 	json_len = SG(request_info).raw_post_data_length;
-#endif
+#	endif
 
 	if (json_len) {
 		zval zjson;
 
 		INIT_ZVAL(zjson);
-#if PHP_VERSION_ID >= 50400
+
+#	if PHP_VERSION_ID >= 50400
 		php_json_decode_ex(&zjson, json_str, json_len, JSON_POST_G(flags), PG(max_input_nesting_level) TSRMLS_CC);
 		if (Z_TYPE(zjson) != IS_NULL) {
 			zval_dtor(zarg);
 			ZVAL_COPY_VALUE(zarg, (&zjson));
-#else
+#	else
 		php_json_decode(&zjson, json_str, json_len, (zend_bool)(JSON_POST_G(flags)&1), PG(max_input_nesting_level) TSRMLS_CC);
 		if (Z_TYPE(zjson) != IS_NULL) {
 			zval_dtor(zarg);
 			zarg->value = zjson.value;
 			Z_TYPE_P(zarg) = Z_TYPE(zjson);
-#endif
+#	endif
 		}
 	}
-#if PHP_VERSION_ID >= 50600
+#	if PHP_VERSION_ID >= 50600
 	if (json_str) {
 		efree(json_str);
 	}
-#endif
+#	endif
 }
+
+#endif
 
 PHP_MINIT_FUNCTION(json_post)
 {
