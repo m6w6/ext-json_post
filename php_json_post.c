@@ -30,7 +30,11 @@ PHP_INI_END()
 
 static void php_json_post_init_globals(zend_json_post_globals *json_post_globals)
 {
+#if PHP_VERSION_ID >= 50400
 	json_post_globals->flags = PHP_JSON_OBJECT_AS_ARRAY;
+#else
+	json_post_globals->flags = 1;
+#endif
 }
 
 PHP_MINFO_FUNCTION(json_post)
@@ -63,10 +67,18 @@ static SAPI_POST_HANDLER_FUNC(php_json_post_handler)
 		zval zjson;
 
 		INIT_ZVAL(zjson);
+#if PHP_VERSION_ID >= 50400
 		php_json_decode_ex(&zjson, json_str, json_len, JSON_POST_G(flags), PG(max_input_nesting_level) TSRMLS_CC);
-			if (Z_TYPE(zjson) != IS_NULL) {
+		if (Z_TYPE(zjson) != IS_NULL) {
 			zval_dtor(zarg);
 			ZVAL_COPY_VALUE(zarg, (&zjson));
+#else
+		php_json_decode(&zjson, json_str, json_len, (zend_bool)(JSON_POST_G(flags)&1), PG(max_input_nesting_level) TSRMLS_CC);
+		if (Z_TYPE(zjson) != IS_NULL) {
+			zval_dtor(zarg);
+			zarg->value = zjson.value;
+			Z_TYPE_P(zarg) = Z_TYPE(zjson);
+#endif
 		}
 	}
 #if PHP_VERSION_ID >= 50600
