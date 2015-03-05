@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<package version="2.0" xmlns="http://pear.php.net/dtd/package-2.0"
+ xmlns:tasks="http://pear.php.net/dtd/tasks-1.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="
+  http://pear.php.net/dtd/tasks-1.0
+  http://pear.php.net/dtd/tasks-1.0.xsd
+  http://pear.php.net/dtd/package-2.0
+  http://pear.php.net/dtd/package-2.0.xsd">
+ <name>json_post</name>
+ <channel>pecl.php.net</channel>
+ <summary>JSON POST handler</summary>
+ <description><![CDATA[
+This extension provides a PHP content type handler for "text/json" to PHP's
+form data parser. If the `Content-Type` of an incoming request is `text/json`,
+the JSON contents of the request body will by parsed into `$_POST`.
+
+This extension does not provide any constants, functions or classes.
+]]></description>
+ <lead>
+  <name>Michael Wallner</name>
+  <user>mike</user>
+  <email>mike@php.net</email>
+  <active>yes</active>
+ </lead>
+ <date>2015-03-01</date>
+ <version>
+  <release>1.0.0</release>
+  <api>1.0.0</api>
+ </version>
+ <stability>
+  <release>stable</release>
+  <api>stable</api>
+ </stability>
+ <license>BSD, revised</license>
+ <notes><![CDATA[
+* Split off pecl_http
+]]></notes>
+ <contents>
+  <dir name="/">
+   <file role="doc" name="LICENSE"/>
+   <file role="doc" name="CREDITS"/>
+   <file role="src" name="config.m4"/>
+   <file role="src" name="config.w32"/>
+
+   <file role="src" name="php_json_post.h"/>
+   <file role="src" name="php_json_post.c"/>
+
+   <dir name="tests">
+     <file role="test" name="001.phpt"/>
+     <file role="test" name="002.phpt"/>
+   </dir>
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.3.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.1</min>
+   </pearinstaller>
+   <extension>
+    <name>json</name>
+   </extension>
+  </required>
+ </dependencies>
+ <providesextension>json_post</providesextension>
+ <extsrcrelease/>
+ <changelog />
+</package>

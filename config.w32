@@ -1,0 +1,5 @@
+ARG_ENABLE("json-post", "enable json_post support", "no");
+
+if (PHP_JSON_POST != "no") {
+	EXTENSION("json_post", "php_json_post.c");
+}
