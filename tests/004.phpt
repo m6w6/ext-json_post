@@ -1,9 +1,9 @@
 --TEST--
-json_post with > 32bits integer as float on 32bits
+json_post with > 32bits integer as float on 64bits
 --SKIPIF--
 <?php
 extension_loaded("json_post") or die("skip need json_post support\n");
-if (PHP_INT_SIZE != 4) die("skip this test is for 32bits platform only");
+if (PHP_INT_SIZE != 8) die("skip this test is for 64bits platform only");
 ?>
 --INI--
 json_post.flags=0
@@ -21,7 +21,7 @@ Done
 --EXPECTF--
 object(stdClass)#%d (1) {
   ["bigint"]=>
-  float(12345678901234)
+  int(12345678901234)
 }
 int(0)
 Done

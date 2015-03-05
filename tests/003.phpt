@@ -6,7 +6,7 @@ extension_loaded("json_post") or die("skip need json_post support\n");
 if (PHP_INT_SIZE != 4) die("skip this test is for 32bits platform only");
 ?>
 --INI--
-json_post.flags=0
+json_post.flags=2;JSON_BIGINT_AS_STRING
 --POST_RAW--
 Content-type: text/json
 
@@ -21,7 +21,7 @@ Done
 --EXPECTF--
 object(stdClass)#%d (1) {
   ["bigint"]=>
-  float(12345678901234)
+  string(14) "12345678901234"
 }
 int(0)
 Done
