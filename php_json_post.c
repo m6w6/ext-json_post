@@ -130,14 +130,13 @@ static SAPI_POST_HANDLER_FUNC(php_json_post_handler)
 
 PHP_MINIT_FUNCTION(json_post)
 {
-	sapi_post_entry entry = {NULL, 0, NULL, NULL};
+	sapi_post_entry json_post_entries[] = {
+		{ "text/json", sizeof("text/json")-1, sapi_read_standard_form_data, php_json_post_handler },
+		{ "application/json", sizeof("application/json")-1, sapi_read_standard_form_data, php_json_post_handler },
+		{ NULL, 0, NULL, NULL }
+	};
 
-	entry.post_reader = sapi_read_standard_form_data;
-	entry.post_handler = php_json_post_handler;
-
-	entry.content_type = "text/json";
-	entry.content_type_len = sizeof("text/json")-1;
-	sapi_register_post_entry(&entry TSRMLS_CC);
+	sapi_register_post_entries(json_post_entries TSRMLS_CC);
 
 	ZEND_INIT_MODULE_GLOBALS(json_post, php_json_post_init_globals, NULL);
 	REGISTER_INI_ENTRIES();
