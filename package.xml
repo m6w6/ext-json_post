@@ -11,9 +11,10 @@
  <channel>pecl.php.net</channel>
  <summary>JSON POST handler</summary>
  <description><![CDATA[
-This extension provides a PHP content type handler for "text/json" to PHP's
-form data parser. If the `Content-Type` of an incoming request is `text/json`,
-the JSON contents of the request body will by parsed into `$_POST`.
+This extension provides a PHP content type handler for "application/json" and 
+"text/json" to PHP's form data parser. If the `Content-Type` of an incoming 
+request is `text/json`, the JSON contents of the request body will by parsed 
+into `$_POST`.
 
 This extension does not provide any constants, functions or classes.
 ]]></description>
