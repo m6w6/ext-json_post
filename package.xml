@@ -23,9 +23,9 @@ This extension does not provide any constants, functions or classes.
   <email>mike@php.net</email>
   <active>yes</active>
  </lead>
- <date>2015-03-10</date>
+ <date>2015-03-12</date>
  <version>
-  <release>1.0.0RC1</release>
+  <release>1.0.0RC2</release>
   <api>1.0.0</api>
  </version>
  <stability>
@@ -50,7 +50,7 @@ This extension does not provide any constants, functions or classes.
      <file role="test" name="001.phpt"/>
      <file role="test" name="002.phpt"/>
      <file role="test" name="003.phpt"/>
-     <file role="test" name="004.phpt"/>
+     <file role="test" name="application.phpt"/>
    </dir>
   </dir>
  </contents>

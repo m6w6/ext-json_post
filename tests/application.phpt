@@ -12,7 +12,7 @@ Content-Type: application/json
 }
 --FILE--
 <?php
-var_dump($_POST, json_last_error());
+var_dump($_POST);
 ?>
 Done
 --EXPECTF--
@@ -20,5 +20,4 @@ array(1) {
   ["greeting"]=>
   string(11) "Hello World"
 }
-int(0)
 Done
