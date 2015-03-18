@@ -16,7 +16,7 @@
 extern zend_module_entry json_post_module_entry;
 #define phpext_json_post_ptr &json_post_module_entry
 
-#define PHP_JSON_POST_VERSION "1.0.0RC2"
+#define PHP_JSON_POST_VERSION "1.0.0"
 
 #ifdef PHP_WIN32
 #	define PHP_JSON_POST_API __declspec(dllexport)
