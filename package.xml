@@ -51,6 +51,7 @@ This extension does not provide any constants, functions or classes.
      <file role="test" name="001.phpt"/>
      <file role="test" name="002.phpt"/>
      <file role="test" name="003.phpt"/>
+     <file role="test" name="004.phpt"/>
      <file role="test" name="application.phpt"/>
    </dir>
   </dir>

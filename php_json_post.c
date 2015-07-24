@@ -63,7 +63,7 @@ static SAPI_POST_HANDLER_FUNC(php_json_post_handler)
 
 			ZVAL_NULL(&tmp);
 
-			php_json_decode(&tmp, json->val, json->len, JSON_POST_G(flags), PG(max_input_nesting_level));
+			php_json_decode_ex(&tmp, json->val, json->len, JSON_POST_G(flags), PG(max_input_nesting_level));
 
 			switch (Z_TYPE(tmp)) {
 			case IS_OBJECT:
