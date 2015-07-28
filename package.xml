@@ -24,9 +24,9 @@ This extension does not provide any constants, functions or classes.
   <email>mike@php.net</email>
   <active>yes</active>
  </lead>
- <date>2015-03-18</date>
+ <date>2015-07-28</date>
  <version>
-  <release>1.0.0</release>
+  <release>1.0.1</release>
   <api>1.0.0</api>
  </version>
  <stability>
@@ -35,7 +35,7 @@ This extension does not provide any constants, functions or classes.
  </stability>
  <license>BSD, revised</license>
  <notes><![CDATA[
-* Split off pecl_http
+ * Fix: json_post.flags=2 ignored with php7 (Remi)
 ]]></notes>
  <contents>
   <dir name="/">
