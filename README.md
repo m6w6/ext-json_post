@@ -1,12 +1,13 @@
-# PECL :: json_post
+# PECL :: json_post [![Build Status](https://travis-ci.org/m6w6/ext-json_post.svg?branch=master)](https://travis-ci.org/m6w6/ext-sjon_post)
 
-JSON POST handler [![Build Status](https://travis-ci.org/m6w6/ext-json_post.svg?branch=master)](https://travis-ci.org/m6w6/ext-sjon_post)
+JSON POST handler 
 
 ## About
 
-This tiny extension provides a PHP content type handler for "text/json" to PHP's
-form data parser. If the `Content-Type` of an incoming request is `text/json`,
-the JSON contents of the request body will by parsed into `$_POST`.
+This tiny extension provides a PHP content type handler for JSON to PHP's
+form data parser. If the `Content-Type` of an incoming request is `text/json`
+or `application/json`, the JSON contents of the request body will by parsed
+into `$_POST`.
 
 This extension does not provide any constants, functions or classes.
 
