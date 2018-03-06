@@ -32,8 +32,8 @@ $env = $gen([
 	"enable_maintainer_zts",
 	"enable_json" => "yes"
 ], [
-	"CFLAGS" => "'-O0 -g --profile'",
-	"CXXFLAGS" => "'-O0 -g --profile'",
+	"CFLAGS" => "'-O0 -g --coverage'",
+	"CXXFLAGS" => "'-O0 -g --coverage'",
 	"PHP" => $cur,
 	"enable_json" => "yes"
 ]);
