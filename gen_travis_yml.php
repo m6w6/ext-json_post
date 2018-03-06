@@ -60,4 +60,4 @@ script:
  - make -f travis/pecl/Makefile test
 
 after_success:
- - test -n "$CFLAGS" && cd src/.libs && bash <(curl -s https://codecov.io/bash) -X xcode -X coveragepy
+ - test -n "$CFLAGS" && cd .libs && bash <(curl -s https://codecov.io/bash) -X xcode -X coveragepy
