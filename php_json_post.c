@@ -136,6 +136,9 @@ PHP_MINIT_FUNCTION(json_post)
 		{ NULL, 0, NULL, NULL }
 	};
 
+#ifndef TSRMLS_CC
+#	define TSRMLS_CC
+#endif
 	sapi_register_post_entries(json_post_entries TSRMLS_CC);
 
 	ZEND_INIT_MODULE_GLOBALS(json_post, php_json_post_init_globals, NULL);
