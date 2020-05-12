@@ -69,7 +69,8 @@ static SAPI_POST_HANDLER_FUNC(php_json_post_handler)
 			case IS_OBJECT:
 			case IS_ARRAY:
 				zval_dtor(arg);
-				ZVAL_COPY_VALUE(&PG(http_globals)[TRACK_VARS_POST], &tmp);
+				ZVAL_DUP(&PG(http_globals)[TRACK_VARS_POST], &tmp);
+				zval_dtor(&tmp);
 				break;
 			default:
 				break;
