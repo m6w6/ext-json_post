@@ -68,8 +68,13 @@ static SAPI_POST_HANDLER_FUNC(php_json_post_handler)
 			switch (Z_TYPE(tmp)) {
 			case IS_OBJECT:
 			case IS_ARRAY:
-				zval_dtor(arg);
-				ZVAL_COPY_VALUE(&PG(http_globals)[TRACK_VARS_POST], &tmp);
+				if (zend_hash_num_elements(HASH_OF(&tmp))) {
+					zval_dtor(arg);
+					ZVAL_COPY_VALUE(&PG(http_globals)[TRACK_VARS_POST], &tmp);
+				} else {
+					/* PHP-7.4 optimizes empty array */
+					zval_ptr_dtor(&tmp);
+				}
 				break;
 			default:
 				break;
