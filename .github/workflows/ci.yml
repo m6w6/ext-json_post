@@ -1,0 +1,390 @@
+# generated file; do not edit!
+
+name: ci
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+jobs:
+  old-matrix-0:
+    name: old-matrix-0
+    env:
+      PHP: "7.0"
+      enable_debug: "yes"
+      enable_maintainer_zts: "yes"
+      PECLs: "propro,pecl_http:http:3.2.4"
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install
+        run: |
+          sudo apt-get install -y \
+            php-cli \
+            php-pear \
+            libcurl4-openssl-dev \
+            re2c
+      - name: Prepare
+        run: |
+          make -f scripts/ci/Makefile php || make -f scripts/ci/Makefile clean php
+      - name: Build
+        run: |
+          make -f scripts/ci/Makefile ext PECL=raphf
+      - name: Prepare Test
+        run: |
+          if test -n "$PECLs"; then
+            IFS=$','
+            for pecl in $PECLs; do
+              make -f scripts/ci/Makefile pecl PECL=$pecl
+            done
+            unset IFS
+          fi
+      - name: Test
+        run: |
+          make -f scripts/ci/Makefile test
+
+  old-matrix-1:
+    name: old-matrix-1
+    env:
+      PHP: "7.1"
+      enable_debug: "yes"
+      enable_maintainer_zts: "yes"
+      PECLs: "propro,pecl_http:http:3.2.4"
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install
+        run: |
+          sudo apt-get install -y \
+            php-cli \
+            php-pear \
+            libcurl4-openssl-dev \
+            re2c
+      - name: Prepare
+        run: |
+          make -f scripts/ci/Makefile php || make -f scripts/ci/Makefile clean php
+      - name: Build
+        run: |
+          make -f scripts/ci/Makefile ext PECL=raphf
+      - name: Prepare Test
+        run: |
+          if test -n "$PECLs"; then
+            IFS=$','
+            for pecl in $PECLs; do
+              make -f scripts/ci/Makefile pecl PECL=$pecl
+            done
+            unset IFS
+          fi
+      - name: Test
+        run: |
+          make -f scripts/ci/Makefile test
+
+  old-matrix-2:
+    name: old-matrix-2
+    env:
+      PHP: "7.2"
+      enable_debug: "yes"
+      enable_maintainer_zts: "yes"
+      PECLs: "propro,pecl_http:http:3.2.4"
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install
+        run: |
+          sudo apt-get install -y \
+            php-cli \
+            php-pear \
+            libcurl4-openssl-dev \
+            re2c
+      - name: Prepare
+        run: |
+          make -f scripts/ci/Makefile php || make -f scripts/ci/Makefile clean php
+      - name: Build
+        run: |
+          make -f scripts/ci/Makefile ext PECL=raphf
+      - name: Prepare Test
+        run: |
+          if test -n "$PECLs"; then
+            IFS=$','
+            for pecl in $PECLs; do
+              make -f scripts/ci/Makefile pecl PECL=$pecl
+            done
+            unset IFS
+          fi
+      - name: Test
+        run: |
+          make -f scripts/ci/Makefile test
+
+  old-matrix-3:
+    name: old-matrix-3
+    env:
+      PHP: "7.3"
+      enable_debug: "yes"
+      enable_maintainer_zts: "yes"
+      PECLs: "propro,pecl_http:http:3.2.4"
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install
+        run: |
+          sudo apt-get install -y \
+            php-cli \
+            php-pear \
+            libcurl4-openssl-dev \
+            re2c
+      - name: Prepare
+        run: |
+          make -f scripts/ci/Makefile php || make -f scripts/ci/Makefile clean php
+      - name: Build
+        run: |
+          make -f scripts/ci/Makefile ext PECL=raphf
+      - name: Prepare Test
+        run: |
+          if test -n "$PECLs"; then
+            IFS=$','
+            for pecl in $PECLs; do
+              make -f scripts/ci/Makefile pecl PECL=$pecl
+            done
+            unset IFS
+          fi
+      - name: Test
+        run: |
+          make -f scripts/ci/Makefile test
+
+  old-matrix-4:
+    name: old-matrix-4
+    env:
+      PHP: "7.4"
+      enable_debug: "yes"
+      enable_maintainer_zts: "yes"
+      PECLs: "propro,pecl_http:http:3.2.4"
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install
+        run: |
+          sudo apt-get install -y \
+            php-cli \
+            php-pear \
+            libcurl4-openssl-dev \
+            re2c
+      - name: Prepare
+        run: |
+          make -f scripts/ci/Makefile php || make -f scripts/ci/Makefile clean php
+      - name: Build
+        run: |
+          make -f scripts/ci/Makefile ext PECL=raphf
+      - name: Prepare Test
+        run: |
+          if test -n "$PECLs"; then
+            IFS=$','
+            for pecl in $PECLs; do
+              make -f scripts/ci/Makefile pecl PECL=$pecl
+            done
+            unset IFS
+          fi
+      - name: Test
+        run: |
+          make -f scripts/ci/Makefile test
+
+  master-0:
+    name: master-0
+    continue-on-error: true
+    env:
+      PHP: "master"
+      enable_debug: "yes"
+      enable_zts: "yes"
+      PECLs: "m6w6/ext-http:http:master"
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install
+        run: |
+          sudo apt-get install -y \
+            php-cli \
+            php-pear \
+            libcurl4-openssl-dev \
+            re2c
+      - name: Prepare
+        run: |
+          make -f scripts/ci/Makefile php || make -f scripts/ci/Makefile clean php
+      - name: Build
+        run: |
+          make -f scripts/ci/Makefile ext PECL=raphf
+      - name: Prepare Test
+        run: |
+          if test -n "$PECLs"; then
+            IFS=$','
+            for pecl in $PECLs; do
+              make -f scripts/ci/Makefile pecl PECL=$pecl
+            done
+            unset IFS
+          fi
+      - name: Test
+        run: |
+          make -f scripts/ci/Makefile test
+
+  cur-dbg-zts-0:
+    name: cur-dbg-zts-0
+    env:
+      PHP: "8.0"
+      enable_debug: "yes"
+      enable_zts: "yes"
+      PECLs: "pecl_http:http:4.0.0"
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install
+        run: |
+          sudo apt-get install -y \
+            php-cli \
+            php-pear \
+            libcurl4-openssl-dev \
+            re2c
+      - name: Prepare
+        run: |
+          make -f scripts/ci/Makefile php || make -f scripts/ci/Makefile clean php
+      - name: Build
+        run: |
+          make -f scripts/ci/Makefile ext PECL=raphf
+      - name: Prepare Test
+        run: |
+          if test -n "$PECLs"; then
+            IFS=$','
+            for pecl in $PECLs; do
+              make -f scripts/ci/Makefile pecl PECL=$pecl
+            done
+            unset IFS
+          fi
+      - name: Test
+        run: |
+          make -f scripts/ci/Makefile test
+
+  cur-dbg-zts-1:
+    name: cur-dbg-zts-1
+    env:
+      PHP: "8.0"
+      enable_debug: "no"
+      enable_zts: "yes"
+      PECLs: "pecl_http:http:4.0.0"
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install
+        run: |
+          sudo apt-get install -y \
+            php-cli \
+            php-pear \
+            libcurl4-openssl-dev \
+            re2c
+      - name: Prepare
+        run: |
+          make -f scripts/ci/Makefile php || make -f scripts/ci/Makefile clean php
+      - name: Build
+        run: |
+          make -f scripts/ci/Makefile ext PECL=raphf
+      - name: Prepare Test
+        run: |
+          if test -n "$PECLs"; then
+            IFS=$','
+            for pecl in $PECLs; do
+              make -f scripts/ci/Makefile pecl PECL=$pecl
+            done
+            unset IFS
+          fi
+      - name: Test
+        run: |
+          make -f scripts/ci/Makefile test
+
+  cur-dbg-zts-2:
+    name: cur-dbg-zts-2
+    env:
+      PHP: "8.0"
+      enable_debug: "yes"
+      enable_zts: "no"
+      PECLs: "pecl_http:http:4.0.0"
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install
+        run: |
+          sudo apt-get install -y \
+            php-cli \
+            php-pear \
+            libcurl4-openssl-dev \
+            re2c
+      - name: Prepare
+        run: |
+          make -f scripts/ci/Makefile php || make -f scripts/ci/Makefile clean php
+      - name: Build
+        run: |
+          make -f scripts/ci/Makefile ext PECL=raphf
+      - name: Prepare Test
+        run: |
+          if test -n "$PECLs"; then
+            IFS=$','
+            for pecl in $PECLs; do
+              make -f scripts/ci/Makefile pecl PECL=$pecl
+            done
+            unset IFS
+          fi
+      - name: Test
+        run: |
+          make -f scripts/ci/Makefile test
+
+  cur-dbg-zts-3:
+    name: cur-dbg-zts-3
+    env:
+      PHP: "8.0"
+      enable_debug: "no"
+      enable_zts: "no"
+      PECLs: "pecl_http:http:4.0.0"
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install
+        run: |
+          sudo apt-get install -y \
+            php-cli \
+            php-pear \
+            libcurl4-openssl-dev \
+            re2c
+      - name: Prepare
+        run: |
+          make -f scripts/ci/Makefile php || make -f scripts/ci/Makefile clean php
+      - name: Build
+        run: |
+          make -f scripts/ci/Makefile ext PECL=raphf
+      - name: Prepare Test
+        run: |
+          if test -n "$PECLs"; then
+            IFS=$','
+            for pecl in $PECLs; do
+              make -f scripts/ci/Makefile pecl PECL=$pecl
+            done
+            unset IFS
+          fi
+      - name: Test
+        run: |
+          make -f scripts/ci/Makefile test
+

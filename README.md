@@ -1,6 +1,7 @@
 # ext-json_post
 
-[![Build Status](https://travis-ci.org/m6w6/ext-json_post.svg?branch=master)](https://travis-ci.org/m6w6/ext-json_post)
+[![Build Status](https://github.com/m6w6/ext-json_post/workflows/ci/badge.svg?branch=master)](https://github.com/m6w6/ext-json_post/actions?query=branch%3Amaster+workflow%3Aci)
+[![codecov](https://codecov.io/gh/m6w6/ext-json_post/branch/master/graph/badge.svg?token=Nku9tz8EMj)](https://codecov.io/gh/m6w6/ext-json_post)
 
 JSON POST handler 
 
@@ -8,7 +9,7 @@ JSON POST handler
 
 See the [online markdown reference](https://mdref.m6w6.name/json_post).
 
-## Installing
+## Install
 
 ### PECL
 
