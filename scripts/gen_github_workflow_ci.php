@@ -17,6 +17,7 @@ $job = $gen->github([
 	"PHP" => ["5.6", "7.0", "7.1", "7.2", "7.3", "7.4"],
 	"enable_debug" => "yes",
 	"enable_maintainer_zts" => "yes",
+	"enable_json" => "yes",
 ], 
 "master" => [
 	"PHP" => "master",
