@@ -40,7 +40,7 @@ This extension does not provide any constants, functions or classes.
       response code to send when `json_decode` fails.
     * Add json_post.error_exit INI entry, specifying whether to exit PHP
       without running the script when `json_decode` fails.
-]></notes>
+]]></notes>
  <contents>
   <dir name="/">
    <file role="doc" name="AUTHORS"/>
