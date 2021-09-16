@@ -3,7 +3,7 @@ json_post with malformed JSON (https://github.com/m6w6/ext-json_post/issues/3)
 --SKIPIF--
 <?php
 extension_loaded("json_post") or die("skip need json_post support\n");
-if (PHP_VERSION_ID < 70000) doe("skip need PHP-7.0+\n");
+if (PHP_VERSION_ID < 70000) die("skip need PHP-7.0+\n");
 ?>
 --INI--
 json_post.error_response = 400
