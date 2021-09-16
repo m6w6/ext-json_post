@@ -36,3 +36,4 @@ tests/*/*.sh
 php_json_post.o
 json_post-*.tgz
 tmp-php.ini
+*.dep

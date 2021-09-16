@@ -24,9 +24,9 @@ This extension does not provide any constants, functions or classes.
   <email>mike@php.net</email>
   <active>yes</active>
  </lead>
- <date>2020-05-25</date>
+ <date>2021-09-16</date>
  <version>
-  <release>1.0.2</release>
+  <release>1.1.0</release>
   <api>1.0.0</api>
  </version>
  <stability>
@@ -35,8 +35,12 @@ This extension does not provide any constants, functions or classes.
  </stability>
  <license uri="http://copyfree.org/content/standard/licenses/2bsd/license.txt">BSD-2-Clause</license>
  <notes><![CDATA[
- * Fix gh-issue #1: segfault on 7.4 with empty array (Mark Rigby-Jones)
-]]></notes>
+* Fix gh-issue #3:
+    * Add json_post.error_response INI entry, specifying whether and which
+      response code to send when `json_decode` fails.
+    * Add json_post.error_exit INI entry, specifying whether to exit PHP
+      without running the script when `json_decode` fails.
+]></notes>
  <contents>
   <dir name="/">
    <file role="doc" name="AUTHORS"/>

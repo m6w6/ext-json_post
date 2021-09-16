@@ -26,6 +26,8 @@ ZEND_DECLARE_MODULE_GLOBALS(json_post);
 
 PHP_INI_BEGIN()
     STD_PHP_INI_ENTRY("json_post.flags", "1", PHP_INI_PERDIR, OnUpdateLong, flags, zend_json_post_globals, json_post_globals)
+	STD_PHP_INI_ENTRY("json_post.error_response", "0", PHP_INI_PERDIR, OnUpdateLong, error_response, zend_json_post_globals, json_post_globals)
+	STD_PHP_INI_ENTRY("json_post.error_exit", "0", PHP_INI_PERDIR, OnUpdateBool, error_exit, zend_json_post_globals, json_post_globals)
 PHP_INI_END()
 
 static void php_json_post_init_globals(zend_json_post_globals *json_post_globals)
@@ -37,6 +39,21 @@ static void php_json_post_init_globals(zend_json_post_globals *json_post_globals
 #endif
 }
 
+#if PHP_VERSION_ID < 70000
+ZEND_EXTERN_MODULE_GLOBALS(json);
+static inline void zend_print_long_to_buf(char *p, long l) {
+	do {
+		*--p = (char) (l % 10) + '0';
+	} while (l /= 10);
+}
+#endif
+
+#ifndef TSRMLS_CC
+#	define TSRMLS_C
+#	define TSRMLS_CC
+#endif
+
+
 PHP_MINFO_FUNCTION(json_post)
 {
 	php_info_print_table_start();
@@ -46,9 +63,9 @@ PHP_MINFO_FUNCTION(json_post)
 	DISPLAY_INI_ENTRIES();
 }
 
-#if PHP_VERSION_ID >= 70000
 static SAPI_POST_HANDLER_FUNC(php_json_post_handler)
 {
+#if PHP_VERSION_ID >= 70000
 	zend_string *json = NULL;
 
 	if (SG(request_info).request_body) {
@@ -60,10 +77,15 @@ static SAPI_POST_HANDLER_FUNC(php_json_post_handler)
 	if (json) {
 		if (json->len) {
 			zval tmp;
+			long flags = JSON_POST_G(flags);
+
+#ifdef PHP_JSON_THROW_ON_ERROR
+			/* there's no execute data, so we must ensure json_decode() is not throwing */
+			flags &= ~PHP_JSON_THROW_ON_ERROR;
+#endif
 
 			ZVAL_NULL(&tmp);
-
-			php_json_decode_ex(&tmp, json->val, json->len, JSON_POST_G(flags), PG(max_input_nesting_level));
+			php_json_decode_ex(&tmp, json->val, json->len, flags, PG(max_input_nesting_level));
 
 			switch (Z_TYPE(tmp)) {
 			case IS_OBJECT:
@@ -82,12 +104,9 @@ static SAPI_POST_HANDLER_FUNC(php_json_post_handler)
 		}
 		zend_string_release(json);
 	}
-}
 
 #else
 
-static SAPI_POST_HANDLER_FUNC(php_json_post_handler)
-{
 	zval *zarg = arg;
 	char *json_str = NULL;
 	size_t json_len = 0;
@@ -129,9 +148,21 @@ static SAPI_POST_HANDLER_FUNC(php_json_post_handler)
 		efree(json_str);
 	}
 #	endif
-}
-
 #endif
+
+	if (JSON_G(error_code)) {
+		if (JSON_POST_G(error_response)) {
+			char header[] = "X-JSON-Error-Code:   ";
+			zend_print_long_to_buf(header + sizeof(header) - 1, (JSON_G(error_code) & 0xff));
+			sapi_header_op(SAPI_HEADER_SET_STATUS, (void *) (long) JSON_POST_G(error_response) TSRMLS_CC);
+			sapi_add_header(header, sizeof(header)-1, 1);
+		}
+		if (JSON_POST_G(error_exit)) {
+			sapi_send_headers(TSRMLS_C);
+			zend_bailout();
+		}
+	}
+}
 
 PHP_MINIT_FUNCTION(json_post)
 {
@@ -141,9 +172,6 @@ PHP_MINIT_FUNCTION(json_post)
 		{ NULL, 0, NULL, NULL }
 	};
 
-#ifndef TSRMLS_CC
-#	define TSRMLS_CC
-#endif
 	sapi_register_post_entries(json_post_entries TSRMLS_CC);
 
 	ZEND_INIT_MODULE_GLOBALS(json_post, php_json_post_init_globals, NULL);
