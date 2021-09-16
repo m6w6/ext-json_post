@@ -161,6 +161,8 @@ static SAPI_POST_HANDLER_FUNC(php_json_post_handler)
 			sapi_send_headers(TSRMLS_C);
 			zend_bailout();
 		}
+		/* ext/json in PHP-7 fails to reset error_code in RINIT */
+		JSON_G(error_code) = 0;
 	}
 }
 
