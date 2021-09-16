@@ -25,7 +25,7 @@
 ZEND_DECLARE_MODULE_GLOBALS(json_post);
 
 PHP_INI_BEGIN()
-    STD_PHP_INI_ENTRY("json_post.flags", "1", PHP_INI_PERDIR, OnUpdateLong, flags, zend_json_post_globals, json_post_globals)
+	STD_PHP_INI_ENTRY("json_post.flags", "1", PHP_INI_PERDIR, OnUpdateLong, flags, zend_json_post_globals, json_post_globals)
 	STD_PHP_INI_ENTRY("json_post.error_response", "0", PHP_INI_PERDIR, OnUpdateLong, error_response, zend_json_post_globals, json_post_globals)
 	STD_PHP_INI_ENTRY("json_post.error_exit", "0", PHP_INI_PERDIR, OnUpdateBool, error_exit, zend_json_post_globals, json_post_globals)
 PHP_INI_END()
