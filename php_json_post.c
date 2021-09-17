@@ -59,7 +59,7 @@ PHP_MINFO_FUNCTION(json_post)
 #if PHP_VERSION_ID < 70000
 #	undef JSON_G
 #	ifdef ZTS
-#		define JSON_G(v) TSRMG(JSON_POST_G(json_module)->globals_id_ptr, zend_json_globals *, v)
+#		define JSON_G(v) TSRMG(*JSON_POST_G(json_module)->globals_id_ptr, zend_json_globals *, v)
 #	else
 #		define JSON_G(v) ((zend_json_globals *) JSON_POST_G(json_module)->globals_ptr)->v
 #	endif
