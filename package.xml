@@ -36,10 +36,12 @@ This extension does not provide any constants, functions or classes.
  <license uri="http://copyfree.org/content/standard/licenses/2bsd/license.txt">BSD-2-Clause</license>
  <notes><![CDATA[
 * Fix gh-issue #3:
-    * Add json_post.error_response INI entry, specifying whether and which
+    * Add json_post.onerror.response INI entry, specifying whether and which
       response code to send when `json_decode` fails.
-    * Add json_post.error_exit INI entry, specifying whether to exit PHP
+    * Add json_post.onerror.exit INI entry, specifying whether to exit PHP
       without running the script when `json_decode` fails.
+    * Add json_post.onerror.warning INI entry, specifying whether to raise
+			a WARNING when `json_decode` fails.
 ]]></notes>
  <contents>
   <dir name="/">

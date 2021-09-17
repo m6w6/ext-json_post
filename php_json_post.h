@@ -30,10 +30,17 @@ extern zend_module_entry json_post_module_entry;
 #	include "TSRM.h"
 #endif
 
+#if PHP_VERSION_ID < 70000
+typedef long zend_long;
+#endif
+
 ZEND_BEGIN_MODULE_GLOBALS(json_post)
-	long flags;
-	int error_response;
-	zend_bool error_exit;
+	zend_long flags;
+	struct {
+		zend_long response;
+		zend_bool warning;
+		zend_bool exit;
+	} onerror;
 ZEND_END_MODULE_GLOBALS(json_post)
 
 ZEND_EXTERN_MODULE_GLOBALS(json_post);

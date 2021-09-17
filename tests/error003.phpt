@@ -1,25 +1,16 @@
 --TEST--
-json_post with malformed JSON (https://github.com/m6w6/ext-json_post/issues/3)
---SKIPIF--
-<?php
-extension_loaded("json_post") or die("skip need json_post support\n");
-?>
+json_post with malformed JSON [warning] (https://github.com/m6w6/ext-json_post/issues/3)
+--EXTENSIONS--
+json_post
 --INI--
-json_post.error_response = 444
-json_post.error_exit = true
+json_post.onerror.warning = on
 --POST_RAW--
 Content-Type: application/json
 
-{
-	"greeting": "Hello World
-}
---FILE--
-<?php
-var_dump($_POST);
-var_dump(http_response_code());
-?>
-Done
+{"a
+--FILE_EXTERNAL--
+error.inc
 --EXPECTHEADERS--
-Status: 444
-X-JSON-Error-Code: 3
---EXPECT--
+--EXPECTF--
+Warning: json_post: json_decode failed with error code: 3 in %s on line %s
+DONE

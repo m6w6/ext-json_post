@@ -26,12 +26,14 @@ ZEND_DECLARE_MODULE_GLOBALS(json_post);
 
 PHP_INI_BEGIN()
 	STD_PHP_INI_ENTRY("json_post.flags", "1", PHP_INI_PERDIR, OnUpdateLong, flags, zend_json_post_globals, json_post_globals)
-	STD_PHP_INI_ENTRY("json_post.error_response", "0", PHP_INI_PERDIR, OnUpdateLong, error_response, zend_json_post_globals, json_post_globals)
-	STD_PHP_INI_ENTRY("json_post.error_exit", "0", PHP_INI_PERDIR, OnUpdateBool, error_exit, zend_json_post_globals, json_post_globals)
+	STD_PHP_INI_ENTRY("json_post.onerror.response", "0", PHP_INI_PERDIR, OnUpdateLong, onerror.response, zend_json_post_globals, json_post_globals)
+	STD_PHP_INI_ENTRY("json_post.onerror.exit", "0", PHP_INI_PERDIR, OnUpdateBool, onerror.exit, zend_json_post_globals, json_post_globals)
+	STD_PHP_INI_ENTRY("json_post.onerror.warning", "0", PHP_INI_PERDIR, OnUpdateBool, onerror.warning, zend_json_post_globals, json_post_globals)
 PHP_INI_END()
 
 static void php_json_post_init_globals(zend_json_post_globals *json_post_globals)
 {
+	memset(json_post_globals, 0, sizeof(*json_post_globals));
 #if PHP_VERSION_ID >= 50400
 	json_post_globals->flags = PHP_JSON_OBJECT_AS_ARRAY;
 #else
@@ -41,11 +43,6 @@ static void php_json_post_init_globals(zend_json_post_globals *json_post_globals
 
 #if PHP_VERSION_ID < 70000
 ZEND_EXTERN_MODULE_GLOBALS(json);
-static inline void zend_print_long_to_buf(char *p, long l) {
-	do {
-		*--p = (char) (l % 10) + '0';
-	} while (l /= 10);
-}
 #endif
 
 #ifndef TSRMLS_CC
@@ -65,6 +62,8 @@ PHP_MINFO_FUNCTION(json_post)
 
 static SAPI_POST_HANDLER_FUNC(php_json_post_handler)
 {
+	int module_number = 0;
+
 #if PHP_VERSION_ID >= 70000
 	zend_string *json = NULL;
 
@@ -150,14 +149,16 @@ static SAPI_POST_HANDLER_FUNC(php_json_post_handler)
 #	endif
 #endif
 
+	REGISTER_LONG_CONSTANT("JSON_POST_ERROR", JSON_G(error_code), CONST_CS);
+
 	if (JSON_G(error_code)) {
-		if (JSON_POST_G(error_response)) {
-			char header[] = "X-JSON-Error-Code:   ";
-			zend_print_long_to_buf(header + sizeof(header) - 1, (JSON_G(error_code) & 0xff));
-			sapi_header_op(SAPI_HEADER_SET_STATUS, (void *) (long) JSON_POST_G(error_response) TSRMLS_CC);
-			sapi_add_header(header, sizeof(header)-1, 1);
+		if (JSON_POST_G(onerror.response)) {
+			sapi_header_op(SAPI_HEADER_SET_STATUS, (void *) (zend_long) JSON_POST_G(onerror.response) TSRMLS_CC);
 		}
-		if (JSON_POST_G(error_exit)) {
+		if (JSON_POST_G(onerror.warning)) {
+			zend_error(E_WARNING, "json_post: json_decode failed with error code: %d", JSON_G(error_code));
+		}
+		if (JSON_POST_G(onerror.exit)) {
 			sapi_send_headers(TSRMLS_C);
 			zend_bailout();
 		}

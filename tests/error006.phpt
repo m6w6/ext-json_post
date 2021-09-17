@@ -1,9 +1,9 @@
 --TEST--
-json_post with malformed JSON [exit] (https://github.com/m6w6/ext-json_post/issues/3)
+json_post with malformed JSON [json_throw] (https://github.com/m6w6/ext-json_post/issues/3)
 --EXTENSIONS--
 json_post
 --INI--
-json_post.onerror.exit = true
+json_post.flags = 4194305
 --POST_RAW--
 Content-Type: application/json
 
@@ -12,3 +12,4 @@ Content-Type: application/json
 error.inc
 --EXPECTHEADERS--
 --EXPECT--
+DONE
