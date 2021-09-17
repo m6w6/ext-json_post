@@ -57,21 +57,12 @@ PHP_MINFO_FUNCTION(json_post)
 }
 
 #if PHP_VERSION_ID < 70000
-#	define JSON_POST_LAST_ERROR() json_post_last_error(TSRMLS_C)
-static inline int json_post_last_error(TSRMLS_D)
-{
-	zend_long l;
-	zval *zv, **zv_ptr = &zv;
-
-	ALLOC_ZVAL(zv);
-	JSON_POST_G(json_last_error)->internal_function.handler(0, zv, zv_ptr, NULL, 1);
-	l = Z_LVAL_P(zv);
-	FREE_ZVAL(zv);
-
-	return l;
-}
-#else
-#	define JSON_POST_LAST_ERROR() JSON_G(error_code)
+#	undef JSON_G
+#	ifdef ZTS
+#		define JSON_G(v) TSRMG(JSON_POST_G(json_module)->globals_id_ptr, zend_json_globals *, v)
+#	else
+#		define JSON_G(v) ((zend_json_globals *) JSON_POST_G(json_module)->globals_ptr)->v
+#	endif
 #endif
 
 static SAPI_POST_HANDLER_FUNC(php_json_post_handler)
@@ -163,14 +154,14 @@ static SAPI_POST_HANDLER_FUNC(php_json_post_handler)
 #	endif
 #endif
 
-	REGISTER_LONG_CONSTANT("JSON_POST_ERROR", JSON_POST_LAST_ERROR(), CONST_CS);
+	REGISTER_LONG_CONSTANT("JSON_POST_ERROR", JSON_G(error_code), CONST_CS);
 
-	if (JSON_POST_LAST_ERROR()) {
+	if (JSON_G(error_code)) {
 		if (JSON_POST_G(onerror.response)) {
 			sapi_header_op(SAPI_HEADER_SET_STATUS, (void *) (zend_long) JSON_POST_G(onerror.response) TSRMLS_CC);
 		}
 		if (JSON_POST_G(onerror.warning)) {
-			zend_error(E_WARNING, "json_post: json_decode failed with error code: %d", JSON_POST_LAST_ERROR());
+			zend_error(E_WARNING, "json_post: json_decode failed with error code: %d", JSON_G(error_code));
 		}
 		if (JSON_POST_G(onerror.exit)) {
 			sapi_send_headers(TSRMLS_C);
@@ -196,7 +187,7 @@ PHP_MINIT_FUNCTION(json_post)
 	ZEND_INIT_MODULE_GLOBALS(json_post, php_json_post_init_globals, NULL);
 
 #if PHP_VERSION_ID < 70000
-	zend_hash_find(EG(function_table), ZEND_STRS("json_last_error"), (void **) &JSON_POST_G(json_last_error));
+	zend_hash_find(&module_registry, ZEND_STRS("json"), (void **) &JSON_POST_G(json_module));
 #endif
 
 	REGISTER_INI_ENTRIES();

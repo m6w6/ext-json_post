@@ -42,7 +42,7 @@ ZEND_BEGIN_MODULE_GLOBALS(json_post)
 		zend_bool exit;
 	} onerror;
 #if PHP_VERSION_ID < 70000
-	zend_function *json_last_error;
+	zend_module_entry *json_module;
 #endif
 ZEND_END_MODULE_GLOBALS(json_post)
 
