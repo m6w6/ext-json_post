@@ -1,7 +1,5 @@
 --TEST--
 json_post with malformed JSON [exit] (https://github.com/m6w6/ext-json_post/issues/3)
---EXTENSIONS--
-json_post
 --INI--
 json_post.onerror.exit = true
 --POST_RAW--
