@@ -41,15 +41,11 @@ static void php_json_post_init_globals(zend_json_post_globals *json_post_globals
 #endif
 }
 
-#if PHP_VERSION_ID < 70000
-ZEND_EXTERN_MODULE_GLOBALS(json);
-#endif
-
 #ifndef TSRMLS_CC
+#	define TSRMLS_D
 #	define TSRMLS_C
 #	define TSRMLS_CC
 #endif
-
 
 PHP_MINFO_FUNCTION(json_post)
 {
@@ -59,6 +55,24 @@ PHP_MINFO_FUNCTION(json_post)
 
 	DISPLAY_INI_ENTRIES();
 }
+
+#if PHP_VERSION_ID < 70000
+#	define JSON_POST_LAST_ERROR() json_post_last_error(TSRMLS_C)
+static inline int json_post_last_error(TSRMLS_D)
+{
+	zend_long l;
+	zval *zv, **zv_ptr = &zv;
+
+	ALLOC_ZVAL(zv);
+	JSON_POST_G(json_last_error)->internal_function.handler(0, zv, zv_ptr, NULL, 1);
+	l = Z_LVAL_P(zv);
+	FREE_ZVAL(zv);
+
+	return l;
+}
+#else
+#	define JSON_POST_LAST_ERROR() JSON_G(error_code)
+#endif
 
 static SAPI_POST_HANDLER_FUNC(php_json_post_handler)
 {
@@ -149,21 +163,23 @@ static SAPI_POST_HANDLER_FUNC(php_json_post_handler)
 #	endif
 #endif
 
-	REGISTER_LONG_CONSTANT("JSON_POST_ERROR", JSON_G(error_code), CONST_CS);
+	REGISTER_LONG_CONSTANT("JSON_POST_ERROR", JSON_POST_LAST_ERROR(), CONST_CS);
 
-	if (JSON_G(error_code)) {
+	if (JSON_POST_LAST_ERROR()) {
 		if (JSON_POST_G(onerror.response)) {
 			sapi_header_op(SAPI_HEADER_SET_STATUS, (void *) (zend_long) JSON_POST_G(onerror.response) TSRMLS_CC);
 		}
 		if (JSON_POST_G(onerror.warning)) {
-			zend_error(E_WARNING, "json_post: json_decode failed with error code: %d", JSON_G(error_code));
+			zend_error(E_WARNING, "json_post: json_decode failed with error code: %d", JSON_POST_LAST_ERROR());
 		}
 		if (JSON_POST_G(onerror.exit)) {
 			sapi_send_headers(TSRMLS_C);
 			zend_bailout();
 		}
+#if PHP_VERSION_ID >= 70000 && PHP_VERSION_ID < 80000
 		/* ext/json in PHP-7 fails to reset error_code in RINIT */
 		JSON_G(error_code) = 0;
+#endif
 	}
 }
 
@@ -178,6 +194,11 @@ PHP_MINIT_FUNCTION(json_post)
 	sapi_register_post_entries(json_post_entries TSRMLS_CC);
 
 	ZEND_INIT_MODULE_GLOBALS(json_post, php_json_post_init_globals, NULL);
+
+#if PHP_VERSION_ID < 70000
+	zend_hash_find(EG(function_table), ZEND_STRS("json_last_error"), (void **) &JSON_POST_G(json_last_error));
+#endif
+
 	REGISTER_INI_ENTRIES();
 	return SUCCESS;
 }
