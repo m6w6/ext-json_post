@@ -24,7 +24,7 @@ This extension does not provide any constants, functions or classes.
   <email>mike@php.net</email>
   <active>yes</active>
  </lead>
- <date>2021-09-16</date>
+ <date>2021-09-23</date>
  <version>
   <release>1.1.0</release>
   <api>1.0.0</api>
@@ -41,7 +41,7 @@ This extension does not provide any constants, functions or classes.
     * Add json_post.onerror.exit INI entry, specifying whether to exit PHP
       without running the script when `json_decode` fails.
     * Add json_post.onerror.warning INI entry, specifying whether to raise
-			a WARNING when `json_decode` fails.
+      a WARNING when `json_decode` fails.
 ]]></notes>
  <contents>
   <dir name="/">
@@ -64,6 +64,13 @@ This extension does not provide any constants, functions or classes.
      <file role="test" name="004.phpt"/>
      <file role="test" name="005.phpt"/>
      <file role="test" name="application.phpt"/>
+     <file role="test" name="error.inc"/>
+     <file role="test" name="error001.phpt"/>
+     <file role="test" name="error002.phpt"/>
+     <file role="test" name="error003.phpt"/>
+     <file role="test" name="error004.phpt"/>
+     <file role="test" name="error005.phpt"/>
+     <file role="test" name="error006.phpt"/>
    </dir>
   </dir>
  </contents>
