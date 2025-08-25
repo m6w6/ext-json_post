@@ -15,10 +15,9 @@ See the [online markdown reference](https://mdref.m6w6.name/json_post).
 
 	pecl install json_post
 
-### PHARext
+### PIE
 
-Watch out for [PECL replicates](https://replicator.pharext.org?json_post)
-and pharext packages attached to [releases](https://github.com/m6w6/ext-json_post/releases).
+    pie install m6w6/ext-json_post
 
 ### Checkout
 
