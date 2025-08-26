@@ -14,7 +14,7 @@ jobs:
       enable_debug: "yes"
       enable_maintainer_zts: "yes"
       enable_json: "yes"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v2
         with:
@@ -42,7 +42,7 @@ jobs:
       enable_debug: "yes"
       enable_maintainer_zts: "yes"
       enable_json: "yes"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v2
         with:
@@ -70,7 +70,7 @@ jobs:
       enable_debug: "yes"
       enable_maintainer_zts: "yes"
       enable_json: "yes"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v2
         with:
@@ -98,7 +98,7 @@ jobs:
       enable_debug: "yes"
       enable_maintainer_zts: "yes"
       enable_json: "yes"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v2
         with:
@@ -126,7 +126,7 @@ jobs:
       enable_debug: "yes"
       enable_maintainer_zts: "yes"
       enable_json: "yes"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v2
         with:
@@ -154,7 +154,7 @@ jobs:
       enable_debug: "yes"
       enable_maintainer_zts: "yes"
       enable_json: "yes"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v2
         with:
@@ -182,7 +182,7 @@ jobs:
       PHP: "master"
       enable_debug: "yes"
       enable_zts: "yes"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v2
         with:
@@ -209,7 +209,7 @@ jobs:
       PHP: "8.4"
       enable_debug: "yes"
       enable_zts: "yes"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v2
         with:
@@ -236,7 +236,7 @@ jobs:
       PHP: "8.4"
       enable_debug: "no"
       enable_zts: "yes"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v2
         with:
@@ -263,7 +263,7 @@ jobs:
       PHP: "8.4"
       enable_debug: "yes"
       enable_zts: "no"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v2
         with:
@@ -290,7 +290,7 @@ jobs:
       PHP: "8.4"
       enable_debug: "no"
       enable_zts: "no"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v2
         with:
@@ -317,7 +317,7 @@ jobs:
       CFLAGS: "-O0 -g --coverage"
       CXXFLAGS: "-O0 -g --coverage"
       PHP: "8.4"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v2
         with:

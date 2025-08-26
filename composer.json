@@ -1,0 +1,12 @@
+{
+    "name": "m6w6/ext-json_post",
+    "type": "php-ext",
+    "license": "BSD-2-Clause",
+    "description": "JSON POST handler (superglobals from application/json)",
+    "require": {
+        "php": ">= 5.3.0"
+    },
+    "php-ext": {
+        "extension-name": "json_post"
+    }
+}
